@@ -167,6 +167,42 @@ figure {
   flex-direction: column;
 }
 
+.resolution-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.res-row {
+  width: min(800px, 100%);
+}
+
+.fixed-800 {
+  width: 100%;
+}
+
+.res-caption {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 12px 14px;
+}
+
+.res-caption .tag {
+  align-self: flex-start;
+}
+
+.caption-note {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.caption-note strong {
+  color: var(--text);
+}
+
 .img-slot {
   background: var(--panel-2);
   aspect-ratio: 2400 / 1479;

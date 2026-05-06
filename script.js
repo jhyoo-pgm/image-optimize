@@ -133,8 +133,17 @@ async function refresh({ bust = false } = {}) {
 }
 
 function updateEnv() {
-  document.getElementById('dpr').textContent = window.devicePixelRatio;
+  const dpr = window.devicePixelRatio;
+  document.getElementById('dpr').textContent = dpr;
   document.getElementById('vw').textContent = window.innerWidth;
+  const inline = document.getElementById('dpr-inline');
+  if (inline) inline.textContent = dpr;
+  const phys = document.getElementById('phys-width');
+  if (phys) {
+    const slot = document.querySelector('.fixed-800');
+    const cssWidth = slot ? Math.round(slot.getBoundingClientRect().width) : 800;
+    phys.textContent = Math.round(cssWidth * dpr);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {

@@ -96,38 +96,65 @@
       <section id="resolutions">
         <h2>2. 왜 화면 크기보다 2~3배 큰 이미지를 넣을까?</h2>
         <p class="desc">
-          아래 세 이미지는 모두 같은 폭(<strong>800px</strong>)으로
-          표시되지만, 원본 해상도가 다릅니다. 고DPI 디스플레이(맥북·갤럭시
-          등 DPR 2~3)에서는 <strong>1x 이미지가 흐릿하게</strong> 보이고,
-          2x는 또렷합니다. 3x는 시각적 차이가 거의 없는 데 비해 용량만
-          커집니다.
+          아래 슬롯은 모두 <strong>CSS 너비 800px</strong>로 고정되어
+          있습니다. 슬롯 자체는 동일하고, 그 안에 들어가는 이미지의
+          <strong>원본 해상도만</strong> 800w / 1600w / 2400w로 다릅니다.
+          현재 화면의
+          <code>devicePixelRatio = <strong id="dpr-inline">-</strong></code>
+          기준으로 보면, 800px CSS 슬롯의 실제 픽셀 폭은
+          <strong id="phys-width">-</strong>px 입니다.
+          이 픽셀 수를 채우지 못하는 이미지는 흐릿해 보입니다.
         </p>
-        <div class="grid grid-3">
-          <figure data-src="images/800w.webp" data-label="800w (1x 가정)">
-            <div class="img-slot"></div>
-            <figcaption>
+        <div class="resolution-stack">
+          <figure
+            class="res-row"
+            data-src="images/800w.webp"
+            data-label="800w · 1x"
+          >
+            <div class="img-slot fixed-800"></div>
+            <figcaption class="res-caption">
               <span class="tag">800w · 1x</span>
               <span class="meta" data-meta>측정 중…</span>
+              <span class="caption-note" data-fit="800">
+                DPR 1에서는 또렷, DPR 2 이상에서는 보간되어
+                <strong>흐릿</strong>합니다.
+              </span>
             </figcaption>
           </figure>
-          <figure data-src="images/1600w.webp" data-label="1600w (2x)">
-            <div class="img-slot"></div>
-            <figcaption>
-              <span class="tag tag-good">1600w · 2x</span>
+          <figure
+            class="res-row"
+            data-src="images/1600w.webp"
+            data-label="1600w · 2x"
+          >
+            <div class="img-slot fixed-800"></div>
+            <figcaption class="res-caption">
+              <span class="tag tag-good">1600w · 2x ✓ 권장</span>
               <span class="meta" data-meta>측정 중…</span>
+              <span class="caption-note" data-fit="1600">
+                DPR 2까지 또렷. 대부분의 노트북·휴대폰에서 최적입니다.
+              </span>
             </figcaption>
           </figure>
-          <figure data-src="images/2400w.webp" data-label="2400w (3x)">
-            <div class="img-slot"></div>
-            <figcaption>
+          <figure
+            class="res-row"
+            data-src="images/2400w.webp"
+            data-label="2400w · 3x"
+          >
+            <div class="img-slot fixed-800"></div>
+            <figcaption class="res-caption">
               <span class="tag">2400w · 3x</span>
               <span class="meta" data-meta>측정 중…</span>
+              <span class="caption-note" data-fit="2400">
+                DPR 3 디바이스에서만 의미 있음. 보통은 용량만 커지고
+                시각적 이득은 미미합니다.
+              </span>
             </figcaption>
           </figure>
         </div>
         <p class="hint">
-          ↑ 자세히 보려면 이미지 위에 마우스를 올려 100% 확대 비교하세요.
-          DPR이 1인 일반 모니터에서는 차이가 잘 안 보일 수 있습니다.
+          ↑ 이미지 위에 마우스를 올리면 100% 확대됩니다. 1x와 2x의 선명도
+          차이를 비교해보세요. 화면이 800px보다 좁으면 슬롯이 자동으로
+          축소됩니다.
         </p>
         <details class="aside">
           <summary>💡 그래서 실무에서는 <code>srcset</code>을 씁니다</summary>
