@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>이미지 최적화 데모</title>
+    <meta
+      name="description"
+      content="같은 이미지를 포맷·해상도별로 비교하며 웹 이미지 최적화의 핵심을 체감합니다."
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <h1>이미지 최적화 데모</h1>
+      <p class="lead">
+        같은 이미지를 <strong>포맷</strong>(JPG / WebP / AVIF) ×
+        <strong>해상도</strong>(800w / 1600w / 2400w)로 만들어 비교합니다.
+        <br />
+        브라우저 개발자도구 → <em>Network</em> 탭과 함께 보세요.
+      </p>
+      <div class="env">
+        <span>화면 DPR: <strong id="dpr">-</strong></span>
+        <span>뷰포트 너비: <strong id="vw">-</strong>px</span>
+        <button id="reload">캐시 무시하고 다시 측정</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="formats">
+        <h2>1. 포맷 비교 — 같은 픽셀, 다른 용량</h2>
+        <p class="desc">
+          모두 <strong>1600px 폭</strong>의 동일한 원본을 포맷만 바꿔
+          저장했습니다. 화면에는 같은 크기로 표시되지만 다운로드 용량과
+          속도는 크게 다릅니다.
+        </p>
+        <p class="quality-note">
+          <strong>인코딩 품질:</strong>
+          JPG <code>quality 80</code> (mozjpeg) ·
+          WebP <code>quality 80</code> ·
+          AVIF <code>quality 50</code>
+          <span class="quality-help">
+            ※ 품질 수치는 포맷마다 알고리즘이 달라 직접 비교는 무의미합니다.
+            WebP/AVIF는 같은 수치에서 JPG보다 더 작으면서 더 깨끗합니다.
+            WebP는 75~85가 일반적인 권장 범위(Google), AVIF는 50 전후가
+            "시각적 손실 없음"의 기준선입니다.
+          </span>
+        </p>
+        <div class="grid grid-3">
+          <figure data-src="images/1600w.jpg" data-label="JPG (q80, mozjpeg)">
+            <div class="img-slot"></div>
+            <figcaption>
+              <span class="tag">JPG · q80</span>
+              <span class="meta" data-meta>측정 중…</span>
+            </figcaption>
+          </figure>
+          <figure data-src="images/1600w.webp" data-label="WebP (q80)">
+            <div class="img-slot"></div>
+            <figcaption>
+              <span class="tag tag-good">WebP · q80</span>
+              <span class="meta" data-meta>측정 중…</span>
+            </figcaption>
+          </figure>
+          <figure data-src="images/1600w.avif" data-label="AVIF (q50)">
+            <div class="img-slot"></div>
+            <figcaption>
+              <span class="tag tag-best">AVIF · q50</span>
+              <span class="meta" data-meta>측정 중…</span>
+            </figcaption>
+          </figure>
+        </div>
+        <details class="aside">
+          <summary>💡 어떤 포맷을 써야 할까?</summary>
+          <ul>
+            <li>
+              <strong>AVIF</strong>: 가장 작지만 인코딩이 느리고 일부 구형
+              브라우저 미지원.
+            </li>
+            <li>
+              <strong>WebP</strong>: 지원 범위 넓음(IE 제외 사실상 전부).
+              현재 가장 안전한 기본값.
+            </li>
+            <li>
+              <strong>JPG</strong>: 폴백(fallback)용. <code>&lt;picture&gt;</code>
+              로 함께 제공하면 자동 선택됩니다.
+            </li>
+          </ul>
+          <pre><code>&lt;picture&gt;
+  &lt;source srcset="hero.avif" type="image/avif" /&gt;
+  &lt;source srcset="hero.webp" type="image/webp" /&gt;
+  &lt;img src="hero.jpg" alt="" /&gt;
+&lt;/picture&gt;</code></pre>
+        </details>
+      </section>
+
+      <section id="resolutions">
+        <h2>2. 왜 화면 크기보다 2~3배 큰 이미지를 넣을까?</h2>
+        <p class="desc">
+          아래 세 이미지는 모두 같은 폭(<strong>800px</strong>)으로
+          표시되지만, 원본 해상도가 다릅니다. 고DPI 디스플레이(맥북·갤럭시
+          등 DPR 2~3)에서는 <strong>1x 이미지가 흐릿하게</strong> 보이고,
+          2x는 또렷합니다. 3x는 시각적 차이가 거의 없는 데 비해 용량만
+          커집니다.
+        </p>
+        <div class="grid grid-3">
+          <figure data-src="images/800w.webp" data-label="800w (1x 가정)">
+            <div class="img-slot"></div>
+            <figcaption>
+              <span class="tag">800w · 1x</span>
+              <span class="meta" data-meta>측정 중…</span>
+            </figcaption>
+          </figure>
+          <figure data-src="images/1600w.webp" data-label="1600w (2x)">
+            <div class="img-slot"></div>
+            <figcaption>
+              <span class="tag tag-good">1600w · 2x</span>
+              <span class="meta" data-meta>측정 중…</span>
+            </figcaption>
+          </figure>
+          <figure data-src="images/2400w.webp" data-label="2400w (3x)">
+            <div class="img-slot"></div>
+            <figcaption>
+              <span class="tag">2400w · 3x</span>
+              <span class="meta" data-meta>측정 중…</span>
+            </figcaption>
+          </figure>
+        </div>
+        <p class="hint">
+          ↑ 자세히 보려면 이미지 위에 마우스를 올려 100% 확대 비교하세요.
+          DPR이 1인 일반 모니터에서는 차이가 잘 안 보일 수 있습니다.
+        </p>
+        <details class="aside">
+          <summary>💡 그래서 실무에서는 <code>srcset</code>을 씁니다</summary>
+          <p>
+            브라우저가 디바이스 DPR과 표시 크기에 따라 가장 적합한 이미지를
+            <em>자동 선택</em>하도록 만드는 표준 방법입니다.
+          </p>
+          <pre><code>&lt;img
+  src="hero-800w.webp"
+  srcset="
+    hero-800w.webp   800w,
+    hero-1600w.webp 1600w,
+    hero-2400w.webp 2400w"
+  sizes="(max-width: 768px) 100vw, 800px"
+  alt=""
+/&gt;</code></pre>
+          <p>
+            이 페이지에서는 비교 시연을 위해 일부러 고정 소스를 사용했지만,
+            <strong>실제 서비스에서는 위 패턴이 정답</strong>입니다.
+          </p>
+        </details>
+      </section>
+
+      <section id="loading">
+        <h2>3. 로딩 체감 — 9개 변형 동시 로드</h2>
+        <p class="desc">
+          모든 변형을 동시에 새로 받아와 다운로드 시간과 용량을 표시합니다.
+          개발자도구 <em>Network</em> 탭에서 <strong>Slow 4G</strong>로
+          throttling을 걸어 다시 측정해보면 차이가 더 극적으로 드러납니다.
+        </p>
+        <div class="results">
+          <table id="results-table">
+            <thead>
+              <tr>
+                <th>파일</th>
+                <th>포맷</th>
+                <th>해상도</th>
+                <th>용량</th>
+                <th>로드 시간</th>
+                <th>전송 속도(추정)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="hint">
+          ※ 로드 시간은 브라우저·네트워크 상태에 따라 매번 달라집니다.
+          캐시가 있으면 0~수 ms로 찍힐 수 있어요. <em>"캐시 무시하고 다시
+          측정"</em> 버튼으로 매번 새로 받아옵니다.
+        </p>
+      </section>
+
+      <section id="summary">
+        <h2>핵심 요약</h2>
+        <ol>
+          <li>
+            <strong>포맷</strong>: WebP/AVIF가 같은 화질에서 30~70% 더
+            가볍습니다. <code>&lt;picture&gt;</code>로 폴백을 함께
+            제공하세요.
+          </li>
+          <li>
+            <strong>해상도</strong>: 표시 크기의 2배(보통 2x)를 기준으로
+            준비하고, <code>srcset</code>으로 디바이스가 알아서 고르게
+            합니다. 3x는 보통 과합니다.
+          </li>
+          <li>
+            <strong>용량 = 시간</strong>: 모바일·해외 사용자에게는 100KB
+            차이도 체감됩니다. LCP 점수에 직결됩니다.
+          </li>
+          <li>
+            <strong>지연 로딩</strong>: 화면 밖 이미지는
+            <code>loading="lazy"</code>로. 첫 화면(LCP) 이미지는
+            <code>fetchpriority="high"</code>로.
+          </li>
+        </ol>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        원본: 2400×1479, 530 KB ·
+        <a href="https://github.com/" target="_blank" rel="noreferrer"
+          >GitHub Pages</a
+        >에 정적 배포된 데모입니다.
+      </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
