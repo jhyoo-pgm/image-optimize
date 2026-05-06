@@ -219,7 +219,7 @@ figure {
 }
 
 .img-slot:hover img {
-  transform: scale(1.6);
+  transform: scale(2.5);
   transform-origin: var(--mx, 50%) var(--my, 50%);
 }
 
