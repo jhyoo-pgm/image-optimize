@@ -6,7 +6,7 @@
     <title>이미지 최적화 데모</title>
     <meta
       name="description"
-      content="같은 이미지를 포맷·해상도별로 비교하며 웹 이미지 최적화의 핵심을 체감합니다."
+      content="같은 이미지를 포맷·해상도별로 비교하며 웹 이미지 최적화의 효과를 살펴봅니다."
     />
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -36,14 +36,14 @@
         </p>
         <p class="quality-note">
           <strong>인코딩 품질:</strong>
-          JPG <code>quality 80</code> (mozjpeg) ·
+          JPG <code>quality 80</code> (libjpeg, 표준 인코더) ·
           WebP <code>quality 80</code> ·
           AVIF <code>quality 50</code>
           <span class="quality-help">
-            ※ 품질 수치는 포맷마다 알고리즘이 달라 직접 비교는 무의미합니다.
-            WebP/AVIF는 같은 수치에서 JPG보다 더 작으면서 더 깨끗합니다.
-            WebP는 75~85가 일반적인 권장 범위(Google), AVIF는 50 전후가
-            "시각적 손실 없음"의 기준선입니다.
+            ※ 품질 수치는 포맷마다 알고리즘이 달라 같은 숫자라도 시각적
+            품질이 똑같지는 않습니다. 일반적으로 WebP q80은 시각적 손실이
+            거의 없는 수준, AVIF q50은 "JPG q80과 시각적으로 비슷하면서
+            훨씬 작은" 정도로 알려져 있습니다.
           </span>
         </p>
         <div class="grid grid-3">
@@ -78,11 +78,11 @@
             </li>
             <li>
               <strong>WebP</strong>: 지원 범위 넓음(IE 제외 사실상 전부).
-              현재 가장 안전한 기본값.
+              현재 자주 쓰이는 기본값입니다.
             </li>
             <li>
               <strong>JPG</strong>: 폴백(fallback)용. <code>&lt;picture&gt;</code>
-              로 함께 제공하면 자동 선택됩니다.
+              로 함께 제공하면 브라우저가 지원 여부에 따라 골라 받습니다.
             </li>
           </ul>
           <pre><code>&lt;picture&gt;
@@ -103,7 +103,7 @@
           <code>devicePixelRatio = <strong id="dpr-inline">-</strong></code>
           기준으로 보면, 800px CSS 슬롯의 실제 픽셀 폭은
           <strong id="phys-width">-</strong>px 입니다.
-          이 픽셀 수를 채우지 못하는 이미지는 흐릿해 보입니다.
+          이 픽셀 수에 못 미치는 이미지는 흐릿하게 보일 수 있습니다.
         </p>
         <div class="resolution-stack">
           <figure
@@ -116,8 +116,8 @@
               <span class="tag">800w · 1x</span>
               <span class="meta" data-meta>측정 중…</span>
               <span class="caption-note" data-fit="800">
-                DPR 1에서는 또렷, DPR 2 이상에서는 보간되어
-                <strong>흐릿</strong>합니다.
+                DPR 1에서는 또렷하지만, DPR 2 이상에서는 보간되어
+                <strong>흐릿하게</strong> 보일 수 있습니다.
               </span>
             </figcaption>
           </figure>
@@ -131,7 +131,8 @@
               <span class="tag tag-good">1600w · 2x ✓ 권장</span>
               <span class="meta" data-meta>측정 중…</span>
               <span class="caption-note" data-fit="1600">
-                DPR 2까지 또렷. 대부분의 노트북·휴대폰에서 최적입니다.
+                DPR 2까지 또렷합니다. 대부분의 노트북·휴대폰에서 무난하게
+                잘 맞는 선택입니다.
               </span>
             </figcaption>
           </figure>
@@ -146,9 +147,9 @@
               <span class="meta" data-meta>측정 중…</span>
               <span class="caption-note" data-fit="2400">
                 iPhone Pro/Pro Max, 갤럭시 S 시리즈 등 <strong>DPR 3</strong>
-                디바이스를 위한 옵션. 일반 사진은 2x와 시각 차이가
-                미미하지만, 브랜드 히어로·로고처럼 디테일이 중요한
-                이미지는 가치가 있습니다.
+                디바이스를 고려한 옵션입니다. 일반 사진은 2x와 시각 차이가
+                크지 않지만, 브랜드 히어로·로고처럼 디테일이 중요한
+                이미지에서는 도움이 될 수 있습니다.
               </span>
             </figcaption>
           </figure>
@@ -167,53 +168,54 @@
           <ul>
             <li>
               <strong>DPR 1</strong>: 일반 데스크톱 모니터, 저가형 노트북.
-              여전히 무시할 수 없는 비중 (특히 B2B).
+              아직도 적지 않은 비중을 차지합니다 (특히 B2B 환경).
             </li>
             <li>
               <strong>DPR 2</strong>: 맥북·아이맥, iPhone SE/일반 모델,
-              대부분의 안드로이드 중급기. <em>가장 큰 사용자 그룹.</em>
+              대부분의 안드로이드 중급기. <em>비중이 큰 사용자 그룹입니다.</em>
             </li>
             <li>
               <strong>DPR 3</strong>: iPhone Pro/Pro Max/Plus, 갤럭시 S/노트
-              플래그십. <em>모바일 트래픽이 많은 서비스라면 무시 못함.</em>
+              플래그십. <em>모바일 트래픽이 많다면 고려해볼 만합니다.</em>
             </li>
           </ul>
           <p>
-            <strong>3x까지 준비하는 게 가치 있는 경우</strong>
+            <strong>3x까지 준비하면 도움이 될 수 있는 경우</strong>
           </p>
           <ul>
             <li>
               <strong>모바일 사용자 비중이 높은 서비스</strong> — 커머스,
-              미디어, 소셜.
+              미디어, 소셜 등.
             </li>
             <li>
               <strong>디테일이 중요한 이미지</strong> — 브랜드 히어로 배너,
-              제품 컷, 로고/일러스트, 텍스트가 포함된 이미지.
+              제품 컷, 로고/일러스트, 텍스트가 포함된 이미지 등.
             </li>
             <li>
               <strong>첫 화면(Above the fold)의 LCP 이미지</strong> — 사용자
-              인상을 좌우하는 핵심 이미지.
+              첫 인상을 좌우하는 핵심 이미지.
             </li>
           </ul>
           <p>
-            <strong>3x가 과한 경우</strong>
+            <strong>3x가 과해질 수 있는 경우</strong>
           </p>
           <ul>
             <li>
-              본문 안의 일반 사진, 썸네일, 장식용 배경 이미지 — 2x로 충분.
+              본문 안의 일반 사진, 썸네일, 장식용 배경 이미지 — 보통 2x로
+              괜찮습니다.
             </li>
             <li>
               데이터 절약이 우선인 페이지 (느린 네트워크 대상).
             </li>
             <li>
               표시 크기 자체가 작은 경우 (예: 200px 폭 아바타) — 2x 기준
-              400w면 충분.
+              400w 정도여도 무리가 없습니다.
             </li>
           </ul>
           <p class="hint" style="margin-top: 12px;">
-            💡 <strong>안전한 기본 전략</strong>: <code>srcset</code>에 1x,
-            2x, 3x를 모두 등록하고 <code>sizes</code>로 표시 크기를
-            알려주면, 브라우저가 디바이스 DPR과 네트워크 상태를 종합해
+            💡 <strong>참고로</strong>: <code>srcset</code>에 1x, 2x, 3x를
+            모두 등록하고 <code>sizes</code>로 표시 크기를 알려주면,
+            브라우저가 디바이스 DPR과 네트워크 상태를 보고
             <em>가장 적합한 하나만</em> 다운로드합니다. 3x를 추가해도 DPR 2
             사용자는 여전히 2x 파일만 받습니다.
           </p>
@@ -235,7 +237,7 @@
 /&gt;</code></pre>
           <p>
             이 페이지에서는 비교 시연을 위해 일부러 고정 소스를 사용했지만,
-            <strong>실제 서비스에서는 위 패턴이 정답</strong>입니다.
+            실제 서비스에서는 <strong>위 패턴을 권장</strong>합니다.
           </p>
         </details>
       </section>
@@ -245,7 +247,7 @@
         <p class="desc">
           모든 변형을 동시에 새로 받아와 다운로드 시간과 용량을 표시합니다.
           개발자도구 <em>Network</em> 탭에서 <strong>Slow 4G</strong>로
-          throttling을 걸어 다시 측정해보면 차이가 더 극적으로 드러납니다.
+          throttling을 걸어 다시 측정해보면 차이가 더 분명해집니다.
         </p>
         <div class="results">
           <table id="results-table">
@@ -270,26 +272,27 @@
       </section>
 
       <section id="summary">
-        <h2>핵심 요약</h2>
+        <h2>정리</h2>
         <ol>
           <li>
-            <strong>포맷</strong>: WebP/AVIF가 같은 화질에서 30~70% 더
-            가볍습니다. <code>&lt;picture&gt;</code>로 폴백을 함께
-            제공하세요.
+            <strong>포맷</strong>: WebP/AVIF는 같은 수준의 화질에서 JPG보다
+            30~65% 정도 작을 수 있습니다. <code>&lt;picture&gt;</code>로
+            폴백을 함께 제공하면 좋습니다.
           </li>
           <li>
-            <strong>해상도</strong>: 표시 크기의 2배(보통 2x)를 기준으로
-            준비하고, <code>srcset</code>으로 디바이스가 알아서 고르게
-            합니다. 3x는 보통 과합니다.
+            <strong>해상도</strong>: 표시 크기의 2배(2x) 정도를 기준으로
+            준비하고, <code>srcset</code>으로 디바이스가 적절한 것을 고르게
+            하는 패턴이 일반적입니다. 3x까지 갈지는 서비스 성격에 따라
+            검토해볼 수 있습니다.
           </li>
           <li>
-            <strong>용량 = 시간</strong>: 모바일·해외 사용자에게는 100KB
-            차이도 체감됩니다. LCP 점수에 직결됩니다.
+            <strong>용량 = 시간</strong>: 모바일·해외 사용자 환경에서는
+            100KB 차이도 체감될 수 있고, LCP 점수에도 영향을 줍니다.
           </li>
           <li>
-            <strong>지연 로딩</strong>: 화면 밖 이미지는
-            <code>loading="lazy"</code>로. 첫 화면(LCP) 이미지는
-            <code>fetchpriority="high"</code>로.
+            <strong>지연 로딩</strong>: 화면 밖 이미지에는
+            <code>loading="lazy"</code>를, 첫 화면(LCP) 이미지에는
+            <code>fetchpriority="high"</code>를 검토해보세요.
           </li>
         </ol>
       </section>

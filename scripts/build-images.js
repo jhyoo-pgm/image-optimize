@@ -16,7 +16,7 @@ async function main() {
   for (const w of WIDTHS) {
     const base = sharp(buf).resize({ width: w, withoutEnlargement: true });
     tasks.push(
-      base.clone().jpeg({ quality: QUALITY.jpg, mozjpeg: true })
+      base.clone().jpeg({ quality: QUALITY.jpg, mozjpeg: false })
         .toFile(path.join(OUT, `${w}w.jpg`)),
       base.clone().webp({ quality: QUALITY.webp })
         .toFile(path.join(OUT, `${w}w.webp`)),
